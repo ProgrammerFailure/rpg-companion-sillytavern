@@ -183,7 +183,7 @@ function addExtensionSettings() {
     $('#extensions_settings2').append(settingsHtml);
 
     // Set up the enable/disable toggle
-    $('#rpg-extension-enabled').prop('checked', extensionSettings.enabled).on('change', function() {
+    $('#rpg-extension-enabled').prop('checked', extensionSettings.enabled).on('change', function () {
         extensionSettings.enabled = $(this).prop('checked');
         saveSettings();
         updatePanelVisibility();
@@ -229,12 +229,12 @@ async function initUI() {
     setQuestsContainer($('#rpg-quests'));
 
     // Set up event listeners (enable/disable is handled in Extensions tab)
-    $('#rpg-toggle-auto-update').on('change', function() {
+    $('#rpg-toggle-auto-update').on('change', function () {
         extensionSettings.autoUpdate = $(this).prop('checked');
         saveSettings();
     });
 
-    $('#rpg-position-select').on('change', function() {
+    $('#rpg-position-select').on('change', function () {
         extensionSettings.panelPosition = String($(this).val());
         saveSettings();
         applyPanelPosition();
@@ -242,80 +242,80 @@ async function initUI() {
         updateChatThoughts();
     });
 
-    $('#rpg-update-depth').on('change', function() {
+    $('#rpg-update-depth').on('change', function () {
         const value = $(this).val();
         extensionSettings.updateDepth = parseInt(String(value));
         saveSettings();
     });
 
-    $('#rpg-memory-messages').on('change', function() {
+    $('#rpg-memory-messages').on('change', function () {
         const value = $(this).val();
         extensionSettings.memoryMessagesToProcess = parseInt(String(value));
         saveSettings();
     });
 
-    $('#rpg-generation-mode').on('change', function() {
+    $('#rpg-generation-mode').on('change', function () {
         extensionSettings.generationMode = String($(this).val());
         saveSettings();
         updateGenerationModeUI();
     });
 
-    $('#rpg-use-separate-preset').on('change', function() {
+    $('#rpg-use-separate-preset').on('change', function () {
         extensionSettings.useSeparatePreset = $(this).prop('checked');
         saveSettings();
     });
 
-    $('#rpg-toggle-user-stats').on('change', function() {
+    $('#rpg-toggle-user-stats').on('change', function () {
         extensionSettings.showUserStats = $(this).prop('checked');
         saveSettings();
         updateSectionVisibility();
     });
 
-    $('#rpg-toggle-info-box').on('change', function() {
+    $('#rpg-toggle-info-box').on('change', function () {
         extensionSettings.showInfoBox = $(this).prop('checked');
         saveSettings();
         updateSectionVisibility();
     });
 
-    $('#rpg-toggle-thoughts').on('change', function() {
+    $('#rpg-toggle-thoughts').on('change', function () {
         extensionSettings.showCharacterThoughts = $(this).prop('checked');
         saveSettings();
         updateSectionVisibility();
     });
 
-    $('#rpg-toggle-inventory').on('change', function() {
+    $('#rpg-toggle-inventory').on('change', function () {
         extensionSettings.showInventory = $(this).prop('checked');
         saveSettings();
         updateSectionVisibility();
     });
 
-    $('#rpg-toggle-thoughts-in-chat').on('change', function() {
+    $('#rpg-toggle-thoughts-in-chat').on('change', function () {
         extensionSettings.showThoughtsInChat = $(this).prop('checked');
         // console.log('[RPG Companion] Toggle showThoughtsInChat changed to:', extensionSettings.showThoughtsInChat);
         saveSettings();
         updateChatThoughts();
     });
 
-    $('#rpg-toggle-html-prompt').on('change', function() {
+    $('#rpg-toggle-html-prompt').on('change', function () {
         extensionSettings.enableHtmlPrompt = $(this).prop('checked');
         // console.log('[RPG Companion] Toggle enableHtmlPrompt changed to:', extensionSettings.enableHtmlPrompt);
         saveSettings();
     });
 
-    $('#rpg-toggle-plot-buttons').on('change', function() {
+    $('#rpg-toggle-plot-buttons').on('change', function () {
         extensionSettings.enablePlotButtons = $(this).prop('checked');
         // console.log('[RPG Companion] Toggle enablePlotButtons changed to:', extensionSettings.enablePlotButtons);
         saveSettings();
         togglePlotButtons();
     });
 
-    $('#rpg-toggle-animations').on('change', function() {
+    $('#rpg-toggle-animations').on('change', function () {
         extensionSettings.enableAnimations = $(this).prop('checked');
         saveSettings();
         toggleAnimations();
     });
 
-    $('#rpg-manual-update').on('click', async function() {
+    $('#rpg-manual-update').on('click', async function () {
         if (!extensionSettings.enabled) {
             // console.log('[RPG Companion] Extension is disabled. Please enable it in the Extensions tab.');
             return;
@@ -323,20 +323,20 @@ async function initUI() {
         await updateRPGData(renderUserStats, renderInfoBox, renderThoughts, renderInventory);
     });
 
-    $('#rpg-stat-bar-color-low').on('change', function() {
+    $('#rpg-stat-bar-color-low').on('change', function () {
         extensionSettings.statBarColorLow = String($(this).val());
         saveSettings();
         renderUserStats(); // Re-render with new colors
     });
 
-    $('#rpg-stat-bar-color-high').on('change', function() {
+    $('#rpg-stat-bar-color-high').on('change', function () {
         extensionSettings.statBarColorHigh = String($(this).val());
         saveSettings();
         renderUserStats(); // Re-render with new colors
     });
 
     // Theme selection
-    $('#rpg-theme-select').on('change', function() {
+    $('#rpg-theme-select').on('change', function () {
         extensionSettings.theme = String($(this).val());
         saveSettings();
         applyTheme();
@@ -346,7 +346,7 @@ async function initUI() {
     });
 
     // Custom color pickers
-    $('#rpg-custom-bg').on('change', function() {
+    $('#rpg-custom-bg').on('change', function () {
         extensionSettings.customColors.bg = String($(this).val());
         saveSettings();
         if (extensionSettings.theme === 'custom') {
@@ -356,7 +356,7 @@ async function initUI() {
         }
     });
 
-    $('#rpg-custom-accent').on('change', function() {
+    $('#rpg-custom-accent').on('change', function () {
         extensionSettings.customColors.accent = String($(this).val());
         saveSettings();
         if (extensionSettings.theme === 'custom') {
@@ -366,7 +366,7 @@ async function initUI() {
         }
     });
 
-    $('#rpg-custom-text').on('change', function() {
+    $('#rpg-custom-text').on('change', function () {
         extensionSettings.customColors.text = String($(this).val());
         saveSettings();
         if (extensionSettings.theme === 'custom') {
@@ -376,7 +376,7 @@ async function initUI() {
         }
     });
 
-    $('#rpg-custom-highlight').on('change', function() {
+    $('#rpg-custom-highlight').on('change', function () {
         extensionSettings.customColors.highlight = String($(this).val());
         saveSettings();
         if (extensionSettings.theme === 'custom') {
@@ -384,6 +384,11 @@ async function initUI() {
             updateSettingsPopupTheme(getSettingsModal()); // Update popup theme instantly
             updateChatThoughts(); // Update thought bubbles
         }
+    });
+
+    $('#rpg-use-connection-profile').on('change', function () {
+        extensionSettings.useConnectionProfileForGeneration = $(this).prop('checked');
+        initConnectionManagerUI();
     });
 
     // Initialize UI state (enable/disable is in Extensions tab)
@@ -408,6 +413,9 @@ async function initUI() {
     $('#rpg-custom-text').val(extensionSettings.customColors.text);
     $('#rpg-custom-highlight').val(extensionSettings.customColors.highlight);
     $('#rpg-generation-mode').val(extensionSettings.generationMode);
+    $('#rpg-use-connection-profile').prop('checked', extensionSettings.useConnectionProfileForGeneration);
+    
+    initConnectionManagerUI();
 
     updatePanelVisibility();
     updateSectionVisibility();
@@ -452,8 +460,30 @@ async function initUI() {
     initLorebookLimiter();
 }
 
+async function initConnectionManagerUI() {
+    const connectionProfileSelect = $('#rpg-generation-profile');
 
+    // FIX 2: Clear any existing options to prevent duplicates
+    connectionProfileSelect.empty();
 
+    const profiles = await getContext()?.extensionSettings?.connectionManager?.profiles ?? [];
+
+    profiles.forEach((profile) => {
+        var opt = document.createElement('option');
+        opt.value = profile.id;
+        opt.innerHTML = profile.name;
+        connectionProfileSelect.append(opt); // Use .append() with jQuery object
+    });
+
+    // FIX 1: Set the dropdown's value from the loaded settings
+    connectionProfileSelect.val(extensionSettings.connectionProfileName);
+
+    // This part is correct and does not need to be changed
+    $('#rpg-generation-profile').on('change', function () {
+        extensionSettings.connectionProfileName = String($(this).val());
+        saveSettings();
+    });
+}
 
 
 // Rendering functions removed - now imported from src/systems/rendering/*

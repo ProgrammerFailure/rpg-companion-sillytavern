@@ -87,14 +87,16 @@
 </div>
 
 <!-- Settings Modal -->
-<div id="rpg-settings-popup" class="rpg-settings-popup" role="dialog" aria-modal="true" aria-labelledby="rpg-settings-title">
+<div id="rpg-settings-popup" class="rpg-settings-popup" role="dialog" aria-modal="true"
+    aria-labelledby="rpg-settings-title">
     <div class="rpg-settings-popup-content">
         <header class="rpg-settings-popup-header">
             <h3 id="rpg-settings-title">
                 <i class="fa-solid fa-gear" aria-hidden="true"></i>
                 <span>RPG Companion Settings</span>
             </h3>
-            <button id="rpg-close-settings" class="rpg-popup-close" type="button" aria-label="Close settings">&times;</button>
+            <button id="rpg-close-settings" class="rpg-popup-close" type="button"
+                aria-label="Close settings">&times;</button>
         </header>
         <div class="rpg-settings-popup-body">
             <div class="rpg-settings-group">
@@ -146,7 +148,8 @@
             <div class="rpg-settings-group">
                 <h4><i class="fa-solid fa-toggle-on" aria-hidden="true"></i> Display Options</h4>
                 <small class="notes" style="display: block; margin-bottom: 10px;">
-                    <i class="fa-solid fa-info-circle" aria-hidden="true"></i> Use the Extensions tab to enable/disable the RPG Companion extension.
+                    <i class="fa-solid fa-info-circle" aria-hidden="true"></i> Use the Extensions tab to enable/disable
+                    the RPG Companion extension.
                 </small>
 
                 <div class="rpg-setting-row">
@@ -211,7 +214,8 @@
                     <span>Enable Debug Mode</span>
                 </label>
                 <small style="display: block; margin-left: 24px; margin-top: -8px; color: #888; font-size: 11px;">
-                    Shows parser logs in a mobile-friendly UI panel. Useful for troubleshooting. Look for the red bug button.
+                    Shows parser logs in a mobile-friendly UI panel. Useful for troubleshooting. Look for the red bug
+                    button.
                 </small>
             </div>
 
@@ -224,7 +228,8 @@
                         <option value="together">Together with Main Generation</option>
                         <option value="separate">Separate Generation</option>
                     </select>
-                    <small>Together: Adds RPG tracking to main roleplay. Separate: Generates RPG data separately (manual or auto).</small>
+                    <small>Together: Adds RPG tracking to main roleplay. Separate: Generates RPG data separately (manual
+                        or auto).</small>
                 </div>
 
                 <div class="rpg-setting-row">
@@ -244,8 +249,24 @@
                     <span>Use model connected to RPG Companion Trackers preset</span>
                 </label>
                 <small style="display: block; margin-left: 24px; margin-top: -8px; color: #888; font-size: 11px;">
-                    Separate mode only. When enabled, tracker generation will use the model from the "RPG Companion Trackers" preset instead of your main API model. The preset will be switched automatically during generation and restored afterward. Select the desired model in that preset and make sure the "Bind presets to API connections" toggle is on (next to the import/export preset buttons).
+                    Separate mode only. When enabled, tracker generation will use the model from the "RPG Companion
+                    Trackers" preset instead of your main API model. The preset will be switched automatically during
+                    generation and restored afterward. Select the desired model in that preset and make sure the "Bind
+                    presets to API connections" toggle is on (next to the import/export preset buttons).
                 </small>
+
+                <div class="rpg-setting-row">
+                    <label for="rpg-generation-profile">Connection Profile for Generation:</label>
+                    <select id="rpg-generation-profile" class="rpg-select">
+                        <!-- Add options via Javascript-->
+                    </select>
+                    <small>Generation of RPG data will use this Connection Profile</small>
+                </div>
+                <label class="checkbox_label">
+                    <input type="checkbox" id="rpg-use-connection-profile" />
+                    <span>Use Connection Profile to send requests</span>
+                </label>
+
 
                 <!-- Clear Cache Button -->
                 <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--rpg-border);">
@@ -260,7 +281,8 @@
                         <i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i> Reset Button Positions
                     </button>
                     <small style="display: block; margin-top: 8px; color: #888; font-size: 11px;">
-                        Resets all floating action buttons (toggle, refresh, debug) to default top-left positions. Useful if buttons are off-screen.
+                        Resets all floating action buttons (toggle, refresh, debug) to default top-left positions.
+                        Useful if buttons are off-screen.
                     </small>
                 </div>
             </div>
@@ -286,7 +308,8 @@
                 <div class="rpg-dice-selector">
                     <div class="rpg-dice-input-group">
                         <label for="rpg-dice-count">Number of Dice:</label>
-                        <input type="number" id="rpg-dice-count" name="dice-count" min="1" max="20" value="1" class="rpg-input" />
+                        <input type="number" id="rpg-dice-count" name="dice-count" min="1" max="20" value="1"
+                            class="rpg-input" />
                     </div>
                     <div class="rpg-dice-input-group">
                         <label for="rpg-dice-sides">Dice Type:</label>
@@ -316,7 +339,8 @@
 
             <div id="rpg-dice-result" class="rpg-dice-result" hidden aria-live="polite">
                 <div class="rpg-dice-result-label">Result:</div>
-                <output id="rpg-dice-result-value" class="rpg-dice-result-value" for="rpg-dice-count rpg-dice-sides">0</output>
+                <output id="rpg-dice-result-value" class="rpg-dice-result-value"
+                    for="rpg-dice-count rpg-dice-sides">0</output>
                 <div id="rpg-dice-result-details" class="rpg-dice-result-details" role="status"></div>
                 <button id="rpg-dice-save-btn" class="rpg-btn-primary rpg-dice-save-btn" type="button">
                     <i class="fa-solid fa-check" aria-hidden="true"></i>
@@ -328,14 +352,16 @@
 </div>
 
 <!-- Tracker Editor Modal -->
-<div id="rpg-tracker-editor-popup" class="rpg-settings-popup" role="dialog" aria-modal="true" aria-labelledby="rpg-editor-title" style="display: none;">
+<div id="rpg-tracker-editor-popup" class="rpg-settings-popup" role="dialog" aria-modal="true"
+    aria-labelledby="rpg-editor-title" style="display: none;">
     <div class="rpg-settings-popup-content">
         <header class="rpg-settings-popup-header">
             <h3 id="rpg-editor-title">
                 <i class="fa-solid fa-sliders" aria-hidden="true"></i>
                 <span>Edit Trackers</span>
             </h3>
-            <button id="rpg-close-tracker-editor" class="rpg-popup-close" type="button" aria-label="Close tracker editor">&times;</button>
+            <button id="rpg-close-tracker-editor" class="rpg-popup-close" type="button"
+                aria-label="Close tracker editor">&times;</button>
         </header>
 
         <!-- Tabs -->

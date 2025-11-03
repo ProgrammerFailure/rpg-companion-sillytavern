@@ -23,6 +23,8 @@ export const extensionFolderPath = isUserExtension
  */
 export const defaultSettings = {
     enabled: true,
+    useConnectionProfileForGeneration: false,
+    connectionProfileName: null,
     autoUpdate: true,
     updateDepth: 4, // How many messages to include in the context
     generationMode: 'together', // 'separate' or 'together' - whether to generate with main response or separately

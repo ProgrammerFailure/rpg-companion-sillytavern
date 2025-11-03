@@ -22,6 +22,7 @@ import { renderInfoBox } from '../rendering/infoBox.js';
 import { renderThoughts } from '../rendering/thoughts.js';
 import { renderInventory } from '../rendering/inventory.js';
 import { renderQuests } from '../rendering/quests.js';
+import { updateRPGData_ConnectionManager } from './apiClient_ConnectionManager.js'
 
 // Store the original preset name to restore after tracker generation
 let originalPresetName = null;
@@ -74,6 +75,16 @@ async function switchToPreset(presetName) {
 }
 
 
+
+export async function updateRPGData(renderUserStats, renderInfoBox, renderThoughts, renderInventory, renderQuests) {
+    if (extensionSettings.useConnectionProfileForGeneration) {
+        return updateRPGData_ConnectionManager(renderUserStats, renderInfoBox, renderThoughts, renderInventory, renderQuests)
+    }
+    else {
+        return updateRPGData_OriginalPresetMethod(renderUserStats, renderInfoBox, renderThoughts, renderInventory, renderQuests)
+    }
+}
+
 /**
  * Updates RPG tracker data using separate API call (separate mode only).
  * Makes a dedicated API call to generate tracker data, then stores it
@@ -84,7 +95,7 @@ async function switchToPreset(presetName) {
  * @param {Function} renderThoughts - UI function to render character thoughts
  * @param {Function} renderInventory - UI function to render inventory
  */
-export async function updateRPGData(renderUserStats, renderInfoBox, renderThoughts, renderInventory) {
+async function updateRPGData_OriginalPresetMethod(renderUserStats, renderInfoBox, renderThoughts, renderInventory) {
     if (isGenerating) {
         // console.log('[RPG Companion] Already generating, skipping...');
         return;
