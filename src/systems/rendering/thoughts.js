@@ -215,8 +215,8 @@ export function renderThoughts() {
         }
     }
 
-    // Relationship status to emoji mapping (for backward compatibility with old "relationship" field)
-    const relationshipEmojis = {
+    // Get relationship emojis from config (with fallback defaults)
+    const relationshipEmojis = config?.relationshipEmojis || {
         'Enemy': '⚔️',
         'Neutral': '⚖️',
         'Friend': '⭐',
@@ -498,6 +498,10 @@ export function updateCharacterField(characterName, field, value) {
         let statsLineExists = false;
         let statsLineIndex = -1;
 
+        // Get the configured thoughts field name
+        const thoughtsFieldName = presentCharsConfig?.thoughts?.name || 'Thoughts';
+        const isThoughtsField = field.toLowerCase() === 'thoughts' || field === thoughtsFieldName;
+
         // First pass: check if Stats line exists and update other fields
         for (let i = characterStartIndex; i < characterEndIndex; i++) {
             const line = lines[i].trim();
@@ -529,6 +533,11 @@ export function updateCharacterField(characterName, field, value) {
                 const emojiToRelationship = { '⚔️': 'Enemy', '⚖️': 'Neutral', '⭐': 'Friend', '❤️': 'Lover' };
                 const relationshipValue = emojiToRelationship[value] || value;
                 lines[i] = `Relationship: ${relationshipValue}`;
+            }
+            else if (isThoughtsField && line.startsWith(thoughtsFieldName + ':')) {
+                // Update thoughts field
+                lines[i] = `${thoughtsFieldName}: ${value}`;
+                console.log('[RPG Companion] Updated thoughts:', lines[i]);
             }
         }
 
@@ -863,9 +872,7 @@ export function createThoughtPanel($message, thoughtsArray) {
 
     // Append to body so it's not clipped by chat container
     $('body').append($thoughtPanel);
-    $('body').append($thoughtIcon);
-
-    // Position the panel next to the avatar
+    $('body').append($thoughtIcon);    // Position the panel next to the avatar
     const panelWidth = 350;
     const panelMargin = 20;
 
@@ -969,25 +976,33 @@ export function createThoughtPanel($message, thoughtsArray) {
         right: 'auto' // Clear any right positioning
     });
 
-    // Initially hide the panel and show the icon
-    $thoughtPanel.hide();
-    $thoughtIcon.show();
+    // Check if always show bubble is enabled
+    if (extensionSettings.alwaysShowThoughtBubble) {
+        // Always show panel expanded, hide both close button and icon
+        $thoughtPanel.show();
+        $thoughtPanel.find('.rpg-thought-close').hide();
+        $thoughtIcon.hide();
+    } else {
+        // Initially hide the panel and show the icon
+        $thoughtPanel.hide();
+        $thoughtIcon.show();
+
+        // Close button functionality - only when always show is disabled
+        $thoughtPanel.find('.rpg-thought-close').on('click', function(e) {
+            e.stopPropagation();
+            $thoughtPanel.fadeOut(200);
+            $thoughtIcon.fadeIn(200);
+        });
+
+        // Icon click to show panel - only when always show is disabled
+        $thoughtIcon.on('click', function(e) {
+            e.stopPropagation();
+            $thoughtIcon.fadeOut(200);
+            $thoughtPanel.fadeIn(200);
+        });
+    }
 
     // console.log('[RPG Companion] Thought panel created at:', { top, left });
-
-    // Close button functionality
-    $thoughtPanel.find('.rpg-thought-close').on('click', function(e) {
-        e.stopPropagation();
-        $thoughtPanel.fadeOut(200);
-        $thoughtIcon.fadeIn(200);
-    });
-
-    // Icon click to show panel
-    $thoughtIcon.on('click', function(e) {
-        e.stopPropagation();
-        $thoughtIcon.fadeOut(200);
-        $thoughtPanel.fadeIn(200);
-    });
 
     // Add event handlers for editable thoughts in the bubble
     $thoughtPanel.find('.rpg-editable').on('blur', function() {
@@ -1066,12 +1081,14 @@ export function createThoughtPanel($message, thoughtsArray) {
     $('#chat').on('scroll.thoughtPanel', updatePanelPosition);
     $(window).on('resize.thoughtPanel', updatePanelPosition);
 
-    // Remove panel when clicking outside (but not when clicking icon or panel)
-    $(document).on('click.thoughtPanel', function(e) {
-        if (!$(e.target).closest('#rpg-thought-panel, #rpg-thought-icon').length) {
-            // Hide the panel and show the icon instead of removing
-            $thoughtPanel.fadeOut(200);
-            $thoughtIcon.fadeIn(200);
-        }
-    });
+    // Remove panel when clicking outside - only if always show is disabled
+    if (!extensionSettings.alwaysShowThoughtBubble) {
+        $(document).on('click.thoughtPanel', function(e) {
+            if (!$(e.target).closest('#rpg-thought-panel, #rpg-thought-icon').length) {
+                // Hide the panel and show the icon instead of removing
+                $thoughtPanel.fadeOut(200);
+                $thoughtIcon.fadeIn(200);
+            }
+        });
+    }
 }

@@ -297,6 +297,18 @@ async function initUI() {
     });
 
     $('#rpg-toggle-html-prompt').on('change', function () {
+    $('#rpg-toggle-always-show-bubble').on('change', function() {
+        extensionSettings.alwaysShowThoughtBubble = $(this).prop('checked');
+        saveSettings();
+        // Force immediate save to ensure setting is persisted before any other code runs
+        const context = getContext();
+        const extension_settings = context.extension_settings || context.extensionSettings;
+        extension_settings[extensionName] = extensionSettings;
+        // Re-render thoughts to apply the setting
+        updateChatThoughts();
+    });
+
+    $('#rpg-toggle-html-prompt').on('change', function() {
         extensionSettings.enableHtmlPrompt = $(this).prop('checked');
         // console.log('[RPG Companion] Toggle enableHtmlPrompt changed to:', extensionSettings.enableHtmlPrompt);
         saveSettings();
@@ -402,6 +414,7 @@ async function initUI() {
     $('#rpg-toggle-thoughts').prop('checked', extensionSettings.showCharacterThoughts);
     $('#rpg-toggle-inventory').prop('checked', extensionSettings.showInventory);
     $('#rpg-toggle-thoughts-in-chat').prop('checked', extensionSettings.showThoughtsInChat);
+    $('#rpg-toggle-always-show-bubble').prop('checked', extensionSettings.alwaysShowThoughtBubble);
     $('#rpg-toggle-html-prompt').prop('checked', extensionSettings.enableHtmlPrompt);
     $('#rpg-toggle-plot-buttons').prop('checked', extensionSettings.enablePlotButtons);
     $('#rpg-toggle-animations').prop('checked', extensionSettings.enableAnimations);
@@ -414,7 +427,7 @@ async function initUI() {
     $('#rpg-custom-highlight').val(extensionSettings.customColors.highlight);
     $('#rpg-generation-mode').val(extensionSettings.generationMode);
     $('#rpg-use-connection-profile').prop('checked', extensionSettings.useConnectionProfileForGeneration);
-    
+
     initConnectionManagerUI();
 
     updatePanelVisibility();
