@@ -274,8 +274,16 @@
                     <input type="checkbox" id="rpg-use-connection-profile" />
                     <span>Use Connection Profile to send requests</span>
                 </label>
-
-
+                    <label for="rpg-skip-guided-mode">Skip Injections during Guided Generations:</label>
+                    <select id="rpg-skip-guided-mode" class="rpg-select">
+                        <option value="none">Never skip</option>
+                        <option value="impersonation">Only on impersonation requests</option>
+                        <option value="guided">Always for guided or quiet prompts</option>
+                    </select>
+                </div>
+                <small style="display: block; margin-left: 24px; margin-top: -8px; color: #888; font-size: 11px;">
+                    When set, the extension will not inject tracker prompts, examples, or HTML instructions according to the selected mode when a guided generation (via `instruct` or `quiet_prompt`) is detected. Useful when using GuidedGenerations or similar extensions.
+                </small>
                 <!-- Clear Cache Button -->
                 <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--rpg-border);">
                     <button id="rpg-clear-cache" class="rpg-btn-clear-cache">

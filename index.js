@@ -183,18 +183,27 @@ function addExtensionSettings() {
     $('#extensions_settings2').append(settingsHtml);
 
     // Set up the enable/disable toggle
-    $('#rpg-extension-enabled').prop('checked', extensionSettings.enabled).on('change', function () {
+    $('#rpg-extension-enabled').prop('checked', extensionSettings.enabled).on('change', async function() {
+        const wasEnabled = extensionSettings.enabled;
         extensionSettings.enabled = $(this).prop('checked');
         saveSettings();
-        updatePanelVisibility();
 
-        if (!extensionSettings.enabled) {
-            // Clear extension prompts and thought bubbles when disabled
+        if (!extensionSettings.enabled && wasEnabled) {
+            // Disabling extension - remove UI elements
             clearExtensionPrompts();
-            updateChatThoughts(); // This will remove the thought bubble since extension is disabled
-        } else {
-            // Re-create thought bubbles when re-enabled
-            updateChatThoughts(); // This will re-create the thought bubble if data exists
+            updateChatThoughts(); // Remove thought bubbles
+
+            // Remove panel and toggle buttons
+            $('#rpg-companion-panel').remove();
+            $('#rpg-mobile-toggle').remove();
+            $('#rpg-collapse-toggle').remove();
+            $('#rpg-debug-toggle').remove();
+            $('#rpg-debug-panel').remove();
+        } else if (extensionSettings.enabled && !wasEnabled) {
+            // Enabling extension - initialize UI
+            await initUI();
+            loadChatData(); // Load chat data for current chat
+            updateChatThoughts(); // Create thought bubbles if data exists
         }
 
         // Update Memory Recollection button visibility
@@ -206,6 +215,12 @@ function addExtensionSettings() {
  * Initializes the UI for the extension.
  */
 async function initUI() {
+    // Only initialize UI if extension is enabled
+    if (!extensionSettings.enabled) {
+        console.log('[RPG Companion] Extension disabled - skipping UI initialization');
+        return;
+    }
+
     // Load the HTML template using SillyTavern's template system
     const templateHtml = await renderExtensionTemplateAsync(extensionName, 'template');
 
@@ -219,6 +234,11 @@ async function initUI() {
         </button>
     `;
     $('body').append(mobileToggleHtml);
+
+    // Hide mobile toggle on desktop viewport (> 1000px)
+    if (window.innerWidth > 1000) {
+        $('#rpg-mobile-toggle').hide();
+    }
 
     // Cache UI elements using state setters
     setPanelContainer($('#rpg-companion-panel'));
@@ -314,7 +334,16 @@ async function initUI() {
         saveSettings();
     });
 
+<<<<<<< HEAD
     $('#rpg-toggle-plot-buttons').on('change', function () {
+=======
+    $('#rpg-skip-guided-mode').on('change', function() {
+        extensionSettings.skipInjectionsForGuided = String($(this).val());
+        saveSettings();
+    });
+
+    $('#rpg-toggle-plot-buttons').on('change', function() {
+>>>>>>> c48b1dab46a3cc0d517e288c089e5727c6059ad4
         extensionSettings.enablePlotButtons = $(this).prop('checked');
         // console.log('[RPG Companion] Toggle enablePlotButtons changed to:', extensionSettings.enablePlotButtons);
         saveSettings();
@@ -426,9 +455,13 @@ async function initUI() {
     $('#rpg-custom-text').val(extensionSettings.customColors.text);
     $('#rpg-custom-highlight').val(extensionSettings.customColors.highlight);
     $('#rpg-generation-mode').val(extensionSettings.generationMode);
+<<<<<<< HEAD
     $('#rpg-use-connection-profile').prop('checked', extensionSettings.useConnectionProfileForGeneration);
 
     initConnectionManagerUI();
+=======
+    $('#rpg-skip-guided-mode').val(extensionSettings.skipInjectionsForGuided);
+>>>>>>> c48b1dab46a3cc0d517e288c089e5727c6059ad4
 
     updatePanelVisibility();
     updateSectionVisibility();
